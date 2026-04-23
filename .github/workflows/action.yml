@@ -1,0 +1,28 @@
+name: Python App CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - name: Create & test HelloWorld
+      run: |
+        echo 'print("HelloWorld from GitHub Actions!")' > HelloWorld.py
+        python HelloWorld.py
+    - name: Test with pytest
+      run: |
+        pip install pytest
+        echo 'def test_hello(): assert True' > test_hello.py
+        pytest test_hello.py -v
